@@ -23,12 +23,14 @@ export default function LoginCompany() {
                 width="100"
                 placeholder="Ej: Grupo Empresarial XYZ"
                 type="text"
+                name="CompanyName"
               />
               <TextInput
                 title="Contraseña"
                 width="100"
                 placeholder="Escribe tu contraseña"
                 type="password"
+                name="password"
               />
             </div>
             <div className="flex flex-col space-y-3">

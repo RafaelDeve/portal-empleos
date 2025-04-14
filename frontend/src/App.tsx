@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import { Routes, Route, useLocation } from "react-router-dom";
 import Login from "./pages/Login";
 import LoginCompany from "./pages/LoginCompany";
+import Register from "./pages/Register";
+
 
 export default function App() {
 
@@ -25,6 +27,9 @@ const location = useLocation();
       <Routes>
         <Route path="/Login" element={<Login />} />
         <Route path="/LoginCompany" element={<LoginCompany />} />
+        <Route path="/Register" element={<Register />} />
+
+
       </Routes>
       
     </div>
