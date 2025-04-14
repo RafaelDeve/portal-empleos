@@ -1,11 +1,11 @@
-import PrimaryButton from "../components/buttons/PrimaryButton";
-import OutlineButton from "../components/buttons/OutlineButton";
-import TextInput from "../components/inputs/TextInput";
-import TextButton from "../components/buttons/TextButton";
+import PrimaryButton from "../../components/buttons/PrimaryButton";
+import OutlineButton from "../../components/buttons/OutlineButton";
+import TextInput from "../../components/inputs/TextInput";
+import TextButton from "../../components/buttons/TextButton";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
-export default function Login() {
+export default function LoginCompany() {
   const location = useLocation();
 
   return (
@@ -15,15 +15,15 @@ export default function Login() {
         <div className="flex items-center justify-center h-screen w-[50%] ">
           <div className="w-[60%] space-y-6 flex flex-col ">
             <h1 className="self-stretch justify-start text-[#003f51] text-[1rem] font-regular font-montserrat">
-              Iniciar Sesión
+              Acceso empresarial
             </h1>
             <div className="space-y-1">
               <TextInput
-                title="Usuario"
+                title="Nombre de la empresa"
                 width="100"
-                placeholder="Ingresa tu nombre de usuario"
+                placeholder="Ej: Grupo Empresarial XYZ"
                 type="text"
-                name="user"
+                name="CompanyName"
               />
               <TextInput
                 title="Contraseña"
@@ -35,18 +35,24 @@ export default function Login() {
             </div>
             <div className="flex flex-col space-y-3">
               <PrimaryButton text="Acceder" width="100" />
-              {location.pathname === "/Login" && (
+              {location.pathname === "/LoginCompany" && (
                 <div className="">
-                  <Link to="/LoginCompany">
-                    <OutlineButton text="Acceso para empresas" width="100" />
+                  <Link to="/Login">
+                    <OutlineButton
+                      text="Iniciar sesión como usuario"
+                      width="100"
+                    />
                   </Link>
                 </div>
               )}
             </div>
-            {location.pathname === "/Login" && (
+            {location.pathname === "/LoginCompany" && (
               <div className="flex items-center justify-center">
-                <Link to="/Register">
-                  <TextButton span="¿Nuevo por aquí?" CTA="¡Regístrate!" />
+                <Link to="/RegisterCompany">
+                  <TextButton
+                    span="¿Cuenta empresarial lista?"
+                    CTA="¡Regístrate!"
+                  />
                 </Link>
               </div>
             )}
