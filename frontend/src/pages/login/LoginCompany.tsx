@@ -20,14 +20,14 @@ export default function LoginCompany() {
             <div className="space-y-1">
               <TextInput
                 title="Nombre de la empresa"
-                width="100"
+                width="100%"
                 placeholder="Ej: Grupo Empresarial XYZ"
                 type="text"
                 name="CompanyName"
               />
               <TextInput
                 title="Contraseña"
-                width="100"
+                width="100%"
                 placeholder="Escribe tu contraseña"
                 type="password"
                 name="password"
@@ -40,7 +40,7 @@ export default function LoginCompany() {
                   <Link to="/Login">
                     <OutlineButton
                       text="Iniciar sesión como usuario"
-                      width="100"
+                      width="100%"
                     />
                   </Link>
                 </div>

@@ -5,7 +5,7 @@ import TextButton from "../../components/buttons/TextButton";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { useState } from "react";
-import { registerUser } from "../../services/user/userService";
+import { saveUser } from "../../services/user/userService";
 
 export default function RegisterCompany() {
   const location = useLocation();
@@ -25,7 +25,7 @@ export default function RegisterCompany() {
     event.preventDefault();
 
     try {
-      const response = await registerUser(inputs);
+      const response = await saveUser(inputs);
       console.log("Respuesta:", response);
     } catch (error) {
       console.error("Error al registrar:", error);
@@ -45,7 +45,7 @@ export default function RegisterCompany() {
               <div className="space-y-1">
                 <TextInput
                   title="Usuario"
-                  width="100"
+                  width="100%"
                   placeholder="Ingresa tu nombre de usuario"
                   type="text"
                   name="user"
@@ -54,7 +54,7 @@ export default function RegisterCompany() {
                 />
                 <TextInput
                   title="Email"
-                  width="100"
+                  width="100%"
                   placeholder="Ej. usuario@correo.com"
                   type="text"
                   name="email"
@@ -63,7 +63,7 @@ export default function RegisterCompany() {
                 />
                 <TextInput
                   title="Dirección"
-                  width="100"
+                  width="100%"
                   placeholder="Ej. calle 00"
                   type="text"
                   name="address"
@@ -72,7 +72,7 @@ export default function RegisterCompany() {
                 />
                 <TextInput
                   title="Contraseña"
-                  width="100"
+                  width="100%"
                   placeholder="Escribe tu contraseña"
                   type="password"
                   name="password"
@@ -81,13 +81,13 @@ export default function RegisterCompany() {
                 />
               </div>
               <div className="flex flex-col space-y-3">
-                <PrimaryButton text="Registrarse" width="100" />
+                <PrimaryButton text="Registrarse" width="100%" />
                 {location.pathname === "/RegisterCompany" && (
                   <div className="">
                     <Link to="/Register">
                       <OutlineButton
                         text="Registro para usuarios"
-                        width="100"
+                        width="100%"
                       />
                     </Link>
                   </div>

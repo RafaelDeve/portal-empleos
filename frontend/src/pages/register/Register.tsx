@@ -2,13 +2,14 @@ import PrimaryButton from "../../components/buttons/PrimaryButton";
 import OutlineButton from "../../components/buttons/OutlineButton";
 import TextInput from "../../components/inputs/TextInput";
 import TextButton from "../../components/buttons/TextButton";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { useState } from "react";
-import { registerUser } from "../../services/user/userService";
+import { saveUser } from "../../services/user/userService";
 
 export default function Register() {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const [inputs, setInputs] = useState({
     user: "",
@@ -25,8 +26,9 @@ export default function Register() {
     event.preventDefault();
 
     try {
-      const response = await registerUser(inputs);
+      const response = await saveUser(inputs);
       console.log("Respuesta:", response);
+      navigate("/Login");
     } catch (error) {
       console.error("Error al registrar:", error);
     }
@@ -72,13 +74,13 @@ export default function Register() {
                 />
               </div>
               <div className="flex flex-col space-y-3">
-                <PrimaryButton text="Registrarse" width="100" />
+                <PrimaryButton text="Registrarse" width="100%" />
                 {location.pathname === "/Register" && (
                   <div className="">
                     <Link to="/RegisterCompany">
                       <OutlineButton
                         text="Registro para empresas"
-                        width="100"
+                        width="100%"
                       />
                     </Link>
                   </div>

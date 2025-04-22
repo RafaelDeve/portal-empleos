@@ -2,17 +2,17 @@ import PrimaryButton from "../../components/buttons/PrimaryButton";
 import OutlineButton from "../../components/buttons/OutlineButton";
 import TextInput from "../../components/inputs/TextInput";
 import TextButton from "../../components/buttons/TextButton";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-import axios from "axios";
 import { useState } from "react";
+import { loginUser } from "../../services/user/userService";
 
 export default function Login() {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const [inputs, setInputs] = useState({
     user: "",
-    email: "",
     password: "",
   });
 
@@ -20,14 +20,24 @@ export default function Login() {
     event.preventDefault();
 
     try {
-      const response = await axios.post(
-        "http://localhost:8888/api/save.php",
-        inputs
-      );
-      console.log("Respuesta:", response.data);
+      const response = await loginUser(inputs);
+      console.log("Login correcto:", response);
+
+      // Puedes guardar token si lo devuelves
+      // localStorage.setItem("token", response.token);
+
+      // Redirige a home o dashboard
+      localStorage.setItem("user", JSON.stringify(response.user));
+      navigate("/Home");
     } catch (error) {
-      console.error("Error al registrar:", error);
+      console.error("Error en login:", error);
+      alert("Credenciales incorrectas");
     }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setInputs((prev) => ({ ...prev, [name]: value }));
   };
 
   return (
@@ -43,17 +53,21 @@ export default function Login() {
               <div className="space-y-1">
                 <TextInput
                   title="Usuario"
-                  width="100"
+                  width="100%"
                   placeholder="Ingresa tu nombre de usuario"
                   type="text"
                   name="user"
+                  value={inputs.user}
+                  onChange={handleChange}
                 />
                 <TextInput
                   title="Contraseña"
-                  width="100"
+                  width="100%"
                   placeholder="Escribe tu contraseña"
                   type="password"
                   name="password"
+                  value={inputs.password}
+                  onChange={handleChange}
                 />
               </div>
               <div className="flex flex-col space-y-3">
@@ -61,7 +75,7 @@ export default function Login() {
                 {location.pathname === "/Login" && (
                   <div className="">
                     <Link to="/LoginCompany">
-                      <OutlineButton text="Acceso para empresas" width="100" />
+                      <OutlineButton text="Acceso para empresas" width="100%" />
                     </Link>
                   </div>
                 )}

@@ -1,0 +1,18 @@
+{
+  "sqltools.connections": [
+    {
+      "mysqlOptions": {
+        "authProtocol": "default",
+        "enableSsl": "Disabled"
+      },
+      "previewLimit": 50,
+      "server": "serverjobapp2.mysql.database.azure.com",
+      "port": 3306,
+      "driver": "MySQL",
+      "name": "portal-empleos",
+      "database": "portal-empleos",
+      "username": "UserAdministrator1",
+      "password": "Ry02122002!"
+    }
+  ]
+}
