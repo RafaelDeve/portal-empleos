@@ -16,18 +16,31 @@ if ($_SERVER["REQUEST_METHOD"] !== "GET" || !isset($_GET["id"])) {
     exit;
 }
 
+$host = 'serverjobapp2.mysql.database.azure.com'; // cámbialo por el tuyo
+$db   = 'portal-empleos';
+$user = 'UserAdministrator1'; // respeta este formato
+$pass = 'Ry02122002!';
+$charset = 'utf8mb4';
+
+$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
+
+$options = [
+    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    PDO::ATTR_EMULATE_PREPARES   => false,
+];
+
 $id = $_GET["id"];
 
 try {
-    $pdo = new PDO("sqlite:jobs.db");
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $pdo = new PDO($dsn, $user, $pass, $options);
 
     // Obtener vacante
     $stmt = $pdo->prepare("
-        SELECT v.*, d.descripcion, d.requerimientos, d.beneficios, d.fecha_publicacion
-        FROM vacante v
-        LEFT JOIN detalles_vacante d ON v.id = d.vacante_id
-        WHERE v.id = ?
+        SELECT j.*, d.description, d.requirements, d.benefits, d.publication_date
+        FROM jobs j
+        LEFT JOIN jobdetails d ON j.id = d.job_id
+        WHERE j.id = ?
     ");
     $stmt->execute([$id]);
     $vacante = $stmt->fetch(PDO::FETCH_ASSOC);

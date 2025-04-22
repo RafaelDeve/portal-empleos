@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getVacanteDetalle } from "../../services/company/companyService";
+import { getJobDetails } from "../../services/company/companyService";
 
 export default function JobDetail() {
   const { id } = useParams();
@@ -8,7 +8,7 @@ export default function JobDetail() {
 
   useEffect(() => {
     if (id) {
-      getVacanteDetalle(id)
+      getJobDetails(id)
         .then(setJob)
         .catch((err) => console.error("Error al cargar detalles:", err));
     }
@@ -29,10 +29,10 @@ export default function JobDetail() {
 
       <section className="space-y-2">
         <h2 className="text-lg font-semibold">Descripción</h2>
-        <p>{job.descripcion || "No disponible."}</p>
+        <p>{job.description || "No disponible."}</p>
 
         <h2 className="text-lg font-semibold">Requisitos</h2>
-        <p>{job.requerimientos || "No especificados."}</p>
+        <p>{job.requirements || "No especificados."}</p>
 
         <h2 className="text-lg font-semibold">Beneficios</h2>
         <p>{job.beneficios || "No indicados."}</p>

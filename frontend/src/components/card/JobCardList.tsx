@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import JobCard from "./JobCard";
-import { getJobs } from "../../services/company/companyService";
+import { getAllJobs } from "../../services/company/companyService";
 import svg from "../../assets/fi_search.svg";
 import Pagination from "../pagination/Pagination";
 
@@ -21,7 +21,7 @@ export default function JobCardList() {
   const jobsPerPage = 9;
 
   useEffect(() => {
-    getJobs()
+    getAllJobs()
       .then(setJobs)
       .catch((err) => {
         console.error("Error al obtener vacantes:", err);

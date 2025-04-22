@@ -5,7 +5,7 @@ import TextButton from "../../components/buttons/TextButton";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { useState } from "react";
-import { saveUser } from "../../services/user/userService";
+import { saveCompany } from "../../services/company/companyService";
 
 export default function RegisterCompany() {
   const location = useLocation();
@@ -13,6 +13,7 @@ export default function RegisterCompany() {
   const [inputs, setInputs] = useState({
     user: "",
     email: "",
+    address: "",
     password: "",
   });
 
@@ -25,7 +26,7 @@ export default function RegisterCompany() {
     event.preventDefault();
 
     try {
-      const response = await saveUser(inputs);
+      const response = await saveCompany(inputs);
       console.log("Respuesta:", response);
     } catch (error) {
       console.error("Error al registrar:", error);
@@ -67,7 +68,7 @@ export default function RegisterCompany() {
                   placeholder="Ej. calle 00"
                   type="text"
                   name="address"
-                  value={inputs.email}
+                  value={inputs.address}
                   onChange={handleChange}
                 />
                 <TextInput

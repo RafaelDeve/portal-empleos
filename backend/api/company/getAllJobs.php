@@ -18,11 +18,24 @@ if ($_SERVER["REQUEST_METHOD"] !== "GET") {
     exit;
 }
 
-try {
-    $pdo = new PDO("sqlite:jobs.db");
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+$host = 'serverjobapp2.mysql.database.azure.com'; // cámbialo por el tuyo
+$db   = 'portal-empleos';
+$user = 'UserAdministrator1'; // respeta este formato
+$pass = 'Ry02122002!';
+$charset = 'utf8mb4';
 
-    $stmt = $pdo->query("SELECT id, title, schedule, min_salary, max_salary, company_name, company_location FROM vacante");
+$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
+
+$options = [
+    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    PDO::ATTR_EMULATE_PREPARES   => false,
+];
+
+try {
+    $pdo = new PDO($dsn, $user, $pass, $options);
+
+    $stmt = $pdo->query("SELECT id, title, schedule, min_salary, max_salary, company_name, company_location FROM jobs");
     $jobs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     echo json_encode($jobs);

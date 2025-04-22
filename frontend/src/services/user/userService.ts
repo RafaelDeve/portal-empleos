@@ -13,6 +13,6 @@ export const loginUser = async (credentials: {
   user: string;
   password: string;
 }) => {
-  const response = await axios.post("/auth/login.php", credentials);
+  const response = await axios.post("/auth/loginUser.php", credentials);
   return response.data;
 };

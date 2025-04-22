@@ -28,11 +28,24 @@ if (!isset($input['user'], $input['email'], $input['address'], $input['password'
     exit;
 }
 
-try {
-    $pdo = new PDO('sqlite:users.db');
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+$host = 'serverjobapp2.mysql.database.azure.com'; // cámbialo por el tuyo
+$db   = 'portal-empleos';
+$user = 'UserAdministrator1'; // respeta este formato
+$pass = 'Ry02122002!';
+$charset = 'utf8mb4';
 
-    $stmt = $pdo->prepare("INSERT INTO users (user, email, password) VALUES (?, ?, ?)");
+$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
+
+$options = [
+    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    PDO::ATTR_EMULATE_PREPARES   => false,
+];
+
+try {
+    $pdo = new PDO($dsn, $user, $pass, $options);
+
+    $stmt = $pdo->prepare("INSERT INTO companies (user, email, address, password) VALUES (?, ?, ?, ?)");
     $stmt->execute([
         $input['user'],
         $input['email'],

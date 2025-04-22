@@ -25,13 +25,26 @@ if ($username === "" || $password === "") {
     exit;
 }
 
-try {
-    $pdo = new PDO("sqlite:users.db");
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+$host = 'serverjobapp2.mysql.database.azure.com'; // cámbialo por el tuyo
+$db   = 'portal-empleos';
+$user = 'UserAdministrator1'; // respeta este formato
+$pass = 'Ry02122002!';
+$charset = 'utf8mb4';
 
-    $stmt = $pdo->prepare("SELECT * FROM users WHERE user = ?");
+$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
+
+$options = [
+    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    PDO::ATTR_EMULATE_PREPARES   => false,
+];
+
+try {
+    $pdo = new PDO($dsn, $user, $pass, $options);
+
+    $stmt = $pdo->prepare("SELECT * FROM companies WHERE user = ?");
     $stmt->execute([$username]);
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    $user = $stmt->fetch();
 
     if (!$user) {
         http_response_code(401);

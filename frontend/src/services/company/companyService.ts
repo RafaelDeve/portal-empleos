@@ -1,7 +1,15 @@
 import axios from "../api"; // Asegúrate de tener `api.ts` con baseURL
 
+export const loginCompany = async (credentials: {
+  user: string;
+  password: string;
+}) => {
+  const response = await axios.post("/auth/loginCompany.php", credentials);
+  return response.data;
+};
+
 export const saveCompany = async (companyData: {
-  company: string;
+  user: string;
   email: string;
   address: string;
   password: string;
@@ -22,8 +30,8 @@ export const saveJob = async (jobData: {
   return response.data;
 };
 
-export const getJobs = async () => {
-  const response = await axios.get("/company/getJobs.php");
+export const getAllJobs = async () => {
+  const response = await axios.get("/company/getAllJobs.php");
   return response.data;
 };
 
@@ -32,8 +40,8 @@ export const getJobById = async (id: string) => {
   return response.data;
 };
 
-export const getVacanteDetalle = async (id: string) => {
-  const response = await axios.get(`/company/get_vacante_detalle.php?id=${id}`);
+export const getJobDetails = async (id: string) => {
+  const response = await axios.get(`/company/getJobDetails.php?id=${id}`);
   return response.data;
 };
 
