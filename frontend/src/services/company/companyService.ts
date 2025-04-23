@@ -26,7 +26,13 @@ export const saveJob = async (jobData: {
   company_name: string,
   company_location: string
 }) => {
-  const response = await axios.post("/company/saveJob.php", jobData); // O ajusta la ruta según tu API
+  const company = JSON.parse(localStorage.getItem("user") || "{}");
+
+  const response = await axios.post("/company/saveJob.php", {
+    ...jobData,
+    company_id: company.id // ← Aquí agregas el ID del login
+  });
+
   return response.data;
 };
 
@@ -45,3 +51,34 @@ export const getJobDetails = async (id: string) => {
   return response.data;
 };
 
+export const getCompanyJobs = async (company_id: number) => {
+  const response = await axios.post("/company/getCompanyJobs.php", { company_id });
+  return response.data;
+};
+
+export const updateJob = async (jobData: any) => {
+  const response = await fetch("http://localhost:8888/api/company/updateJob.php", {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(jobData),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error("Error del servidor: " + errorText);
+  }
+
+  return await response.json();
+};
+
+export const getCVsByJobId = async (jobId: number) => {
+  const response = await fetch("http://localhost:8888/api/company/getApplicationsWithCV.php", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ job_id: jobId }),
+  });
+
+  return await response.json();
+};

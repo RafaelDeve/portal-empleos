@@ -28,7 +28,7 @@ export default function LoginCompany() {
 
       // Redirige a home o dashboard
       localStorage.setItem("user", JSON.stringify(response.user));
-      navigate("/Home");
+      navigate("/HomeCompany");
     } catch (error) {
       console.error("Error en login:", error);
       alert("Credenciales incorrectas");

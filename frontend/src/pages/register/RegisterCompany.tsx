@@ -2,19 +2,21 @@ import PrimaryButton from "../../components/buttons/PrimaryButton";
 import OutlineButton from "../../components/buttons/OutlineButton";
 import TextInput from "../../components/inputs/TextInput";
 import TextButton from "../../components/buttons/TextButton";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { useState } from "react";
 import { saveCompany } from "../../services/company/companyService";
 
 export default function RegisterCompany() {
   const location = useLocation();
+  const navigate = useNavigate();
+
 
   const [inputs, setInputs] = useState({
     user: "",
     email: "",
     address: "",
-    password: "",
+    password: ""
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -24,10 +26,11 @@ export default function RegisterCompany() {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
+    
     try {
       const response = await saveCompany(inputs);
       console.log("Respuesta:", response);
+      navigate("/LoginCompany");
     } catch (error) {
       console.error("Error al registrar:", error);
     }

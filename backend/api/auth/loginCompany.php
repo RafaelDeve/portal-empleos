@@ -63,7 +63,8 @@ try {
         "user" => [
             "id" => $user["id"],
             "user" => $user["user"],
-            "email" => $user["email"]
+            "email" => $user["email"],
+            "address" => $user["address"]
         ]
     ]);
 } catch (PDOException $e) {

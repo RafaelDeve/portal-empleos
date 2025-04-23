@@ -31,6 +31,7 @@ export default function TextInput({
           style={{ width }}
           className={`input text-[10px] font-light font-montserrat h-9 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#00B837] focus:border-none shadow-none transition-all duration-400 ease-in-out`}
           placeholder={`${placeholder}`}
+          required
         />
       </fieldset>
     </>

@@ -1,8 +1,7 @@
 <?php
-// Habilitar CORS
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: Content-Type");
-header("Access-Control-Allow-Methods: GET, OPTIONS");
+header("Access-Control-Allow-Methods: POST, OPTIONS");
 header("Content-Type: application/json");
 
 if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
@@ -10,9 +9,11 @@ if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
     exit;
 }
 
-if ($_SERVER["REQUEST_METHOD"] !== "GET" || !isset($_GET["id"])) {
+$input = json_decode(file_get_contents("php://input"), true);
+
+if (!isset($input["user_id"], $input["job_id"])) {
     http_response_code(400);
-    echo json_encode(["error" => "ID de vacante requerido"]);
+    echo json_encode(["error" => "Faltan campos"]);
     exit;
 }
 
@@ -30,33 +31,13 @@ $options = [
     PDO::ATTR_EMULATE_PREPARES   => false,
 ];
 
-$id = $_GET["id"];
-
 try {
     $pdo = new PDO($dsn, $user, $pass, $options);
 
-    // Obtener vacante
-    $stmt = $pdo->prepare("
-        SELECT 
-            j.*, 
-            d.description, 
-            d.requirements, 
-            d.benefits, 
-            d.publication_date,
-            (SELECT COUNT(*) FROM applications a WHERE a.job_id = j.id) AS postulaciones
-        FROM jobs j
-        LEFT JOIN jobdetails d ON j.id = d.job_id
-        WHERE j.id = ?
-    ");
-    $stmt->execute([$id]);
-    $vacante = $stmt->fetch(PDO::FETCH_ASSOC);
+    $stmt = $pdo->prepare("INSERT IGNORE INTO applications (user_id, job_id) VALUES (?, ?)");
+    $stmt->execute([$input["user_id"], $input["job_id"]]);
 
-    if ($vacante) {
-        echo json_encode($vacante);
-    } else {
-        http_response_code(404);
-        echo json_encode(["error" => "Vacante no encontrada"]);
-    }
+    echo json_encode(["message" => "Aplicación realizada correctamente"]);
 } catch (PDOException $e) {
     http_response_code(500);
     echo json_encode(["error" => $e->getMessage()]);
