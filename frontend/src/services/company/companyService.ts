@@ -36,6 +36,17 @@ export const saveJob = async (jobData: {
   return response.data;
 };
 
+export const saveJobDetails = async (details: {
+  job_id: number;
+  description: string;
+  requirements: string;
+  benefits: string;
+  publication_date: string;
+}) => {
+  const response = await axios.post("/company/saveJobDetails.php", details);
+  return response.data;
+};
+
 export const getAllJobs = async () => {
   const response = await axios.get("/company/getAllJobs.php");
   return response.data;

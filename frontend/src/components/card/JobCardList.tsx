@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
+import SearchAndLogout from "../header/SearchAndLogout";
 import JobCard from "./JobCard";
 import { getAllJobs } from "../../services/company/companyService";
-import svg from "../../assets/fi_search.svg";
 import Pagination from "../pagination/Pagination";
 
 interface Job {
@@ -43,23 +43,13 @@ export default function JobCardList() {
 
   return (
     <div className="flex flex-col items-center space-y-4">
-      {/* Input de búsqueda */}
-      <div className="relative w-[85%]">
-        <span className="absolute inset-y-0 left-0 flex items-center pl-4 text-gray-400">
-          <img src={svg} className="w-auto h-4" alt="search icon" />
-        </span>
-        <input
-          type="text"
-          placeholder="Buscar por título, empresa o ubicación..."
-          value={searchTerm}
-          onChange={(e) => {
-            setSearchTerm(e.target.value);
-            setCurrentPage(1); // Reinicia a la página 1 cuando se busca
-          }}
-          className="font-montserrat text-[11px] w-full h-10 pl-10 pr-3 bg-white rounded-lg outline outline-[#767f8c]/20 focus:ring-1 focus:ring-[#00B837] transition-all duration-400 ease-in-out"
-        />
-      </div>
-
+     {/* Input de búsqueda y boton de Logout*/}
+          <SearchAndLogout
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            setCurrentPage={setCurrentPage}
+          />
+  
       {/* Lista de vacantes filtradas */}
       <div className="grid grid-cols-3 gap-4 w-[85%]">
         {paginatedJobs.length > 0 ? (
@@ -76,12 +66,12 @@ export default function JobCardList() {
             />
           ))
         ) : (
-          <p className="col-span-3 text-gray-500 font-montserrat text-[11px] ">
+          <p className="col-span-3 text-gray-500 font-montserrat text-[11px]">
             No se encontraron vacantes.
           </p>
         )}
       </div>
-
+  
       {/* Paginación */}
       {totalPages > 1 && (
         <Pagination
@@ -91,5 +81,5 @@ export default function JobCardList() {
         />
       )}
     </div>
-  );
+  );  
 }

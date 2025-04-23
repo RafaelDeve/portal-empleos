@@ -1,7 +1,8 @@
 import PrimaryButton from "../../components/buttons/PrimaryButton";
 import TextInput from "../../components/inputs/TextInput";
 import { useState } from "react";
-import { saveJob } from "../../services/company/companyService";
+import { saveJob, saveJobDetails } from "../../services/company/companyService";
+const storedCompany = JSON.parse(localStorage.getItem("user") || "{}");
 
 export default function AddJob() {
   const [inputs, setInputs] = useState({
@@ -9,9 +10,14 @@ export default function AddJob() {
     schedule: "",
     min_salary: "",
     max_salary: "",
-    company_name: "",
-    company_location: "",
+    company_name: storedCompany.user || "",
+    company_location: storedCompany.address || "",
+    description: "",
+    requirements: "",
+    benefits: "",
+    publication_date: ""
   });
+   
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -20,10 +26,20 @@ export default function AddJob() {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
+  
     try {
       const response = await saveJob(inputs);
-      console.log("Respuesta:", response);
+      const jobId = response.job_id;
+  
+      await saveJobDetails({
+        job_id: jobId,
+        description: inputs.description,
+        requirements: inputs.requirements,
+        benefits: inputs.benefits,
+        publication_date: inputs.publication_date,
+      });
+  
+      console.log("Vacante y detalles guardados correctamente");
     } catch (error) {
       console.error("Error al registrar:", error);
     }
@@ -84,7 +100,9 @@ export default function AddJob() {
                   name="company_name"
                   value={inputs.company_name}
                   onChange={handleChange}
+                  disabled={true}
                 />
+
                 <TextInput
                   title="Ubicacion"
                   width="100"
@@ -92,6 +110,44 @@ export default function AddJob() {
                   type="text"
                   name="company_location"
                   value={inputs.company_location}
+                  onChange={handleChange}
+                  disabled={true}
+                />
+
+                <TextInput
+                  title="Descripcion"
+                  width="100"
+                  placeholder=""
+                  type="text"
+                  name="description"
+                  value={inputs.description}
+                  onChange={handleChange}
+                  />
+                <TextInput
+                  title="Requisitos"
+                  width="100"
+                  placeholder=""
+                  type="text"
+                  name="requirements"
+                  value={inputs.requirements}
+                  onChange={handleChange}
+                />
+                <TextInput
+                  title="Beneficios"
+                  width="100"
+                  placeholder=""
+                  type="text"
+                  name="benefits"
+                  value={inputs.benefits}
+                  onChange={handleChange}
+                />
+                <TextInput
+                  title="Fecha de publicación"
+                  width="100"
+                  placeholder=""
+                  type="date"
+                  name="publication_date"
+                  value={inputs.publication_date}
                   onChange={handleChange}
                 />
               </div>

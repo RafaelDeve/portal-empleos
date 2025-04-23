@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getJobDetails, updateJob } from "../../services/company/companyService";
+import TextInput from "../../components/inputs/TextInput";
+import PrimaryButton from "../../components/buttons/PrimaryButton";
 
 export default function EditJob() {
   const { id } = useParams();
@@ -33,21 +35,72 @@ export default function EditJob() {
     }
   };
 
-  if (loading || !job) return <p className="p-4">Cargando...</p>;
+  if (loading || !job) return <p className="p-4">Cargando vacante...</p>;
 
   return (
-    <div className="max-w-xl mx-auto p-6">
-      <h1 className="text-xl font-bold mb-4">Editar Vacante</h1>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input name="title" value={job.title} onChange={handleChange} placeholder="Título" className="w-full border px-3 py-2 rounded" />
-        <input name="schedule" value={job.schedule} onChange={handleChange} placeholder="Horario" className="w-full border px-3 py-2 rounded" />
-        <input name="min_salary" value={job.min_salary} onChange={handleChange} placeholder="Salario mínimo" className="w-full border px-3 py-2 rounded" />
-        <input name="max_salary" value={job.max_salary} onChange={handleChange} placeholder="Salario máximo" className="w-full border px-3 py-2 rounded" />
-        <input name="company_name" value={job.company_name} onChange={handleChange} placeholder="Nombre empresa" className="w-full border px-3 py-2 rounded" />
-        <input name="company_location" value={job.company_location} onChange={handleChange} placeholder="Ubicación" className="w-full border px-3 py-2 rounded" />
-        <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Guardar cambios</button>
-        {success && <p className="text-green-600 mt-2">{success}</p>}
-      </form>
+    <div className="min-h-screen bg-gradient-to-tr from-[#003F51] to-[#00B837] py-12 px-4">
+      <div className="w-full max-w-xl mx-auto bg-white rounded-2xl shadow-xl px-8 py-10 space-y-4">
+        <h1 className="text-2xl font-bold text-[#003f51] font-montserrat mb-2">Editar Vacante</h1>
+        <form onSubmit={handleSubmit} className="space-y-1 font-montserrat text-[13px]">
+          <TextInput
+            title="Título"
+            width="100%"
+            placeholder=""
+            type="text"
+            name="title"
+            value={job.title}
+            onChange={handleChange}
+          />
+          <TextInput
+            title="Horario"
+            width="100%"
+            placeholder=""
+            type="text"
+            name="schedule"
+            value={job.schedule}
+            onChange={handleChange}
+          />
+          <TextInput
+            title="Salario Mínimo"
+            width="100%"
+            placeholder=""
+            type="text"
+            name="min_salary"
+            value={job.min_salary}
+            onChange={handleChange}
+          />
+          <TextInput
+            title="Salario Máximo"
+            width="100%"
+            placeholder=""
+            type="text"
+            name="max_salary"
+            value={job.max_salary}
+            onChange={handleChange}
+          />
+          <TextInput
+            title="Nombre Empresa"
+            width="100%"
+            placeholder=""
+            type="text"
+            name="company_name"
+            value={job.company_name}
+            onChange={handleChange}
+          />
+          <TextInput
+            title="Ubicación"
+            width="100%"
+            placeholder=""
+            type="text"
+            name="company_location"
+            value={job.company_location}
+            onChange={handleChange}
+          />
+
+          <PrimaryButton text="Guardar cambios" width="100%" />
+          {success && <p className="text-green-600 text-xs pt-2">{success}</p>}
+        </form>
+      </div>
     </div>
   );
 }
