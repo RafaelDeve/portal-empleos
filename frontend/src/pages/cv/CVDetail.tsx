@@ -11,26 +11,29 @@ export default function CVDetail() {
 
   useEffect(() => {
     if (userId) {
-        getCV(Number(userId))
-        .then(async (data) => {
+      getCV(Number(userId))
+        .then((data) => {
           setCvData(data);
-          const url = `/user/getCVPDF.php?user_id=${userId}`;
+  
+          const url = `http://localhost:8888/api/user/getCVPDF.php?user_id=${userId}`;
           
-          try {
-            const res = await fetch(url, { method: "HEAD" });
-            const isPdf = res.ok && res.headers.get("Content-Type") === "application/pdf";
-            if (isPdf) setPdfUrl(url);
-          } catch (error) {
-            console.warn("PDF no encontrado o inaccesible.");
-          }
-        })      
+          fetch(url, { method: "HEAD" })
+            .then((res) => {
+              if (res.ok && res.headers.get("Content-Type") === "application/pdf") {
+                setPdfUrl(url);
+              }
+            })
+            .catch(() => {
+              console.warn("No se pudo verificar el PDF.");
+            });
+        })
         .catch((err) => {
           console.error("Error cargando CV:", err);
           alert("No se pudo cargar el CV del postulante.");
           navigate("/HomeCompany");
         });
     }
-  }, [userId]);
+  }, [userId]);  
 
   if (!cvData) return <p className="p-6">Cargando CV del postulante...</p>;
 
@@ -72,11 +75,13 @@ export default function CVDetail() {
               </a>
               <iframe
                 src={pdfUrl}
-                className="w-full h-[800px] border rounded-md"
+                className="w-full h-[650px] border rounded-md"
               />
             </div>
           ) : (
-            <p className="text-sm text-gray-500">Este postulante no ha subido un archivo PDF.</p>
+            <div className="p-4 border border-gray-200 rounded text-sm text-gray-500 bg-gray-50">
+            Este postulante no ha subido un archivo PDF.
+          </div>
           )}
         </div>
       </div>

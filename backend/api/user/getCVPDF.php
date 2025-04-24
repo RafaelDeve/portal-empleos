@@ -1,7 +1,13 @@
 <?php
 require_once '../helpers/motor.php';
 
-validate_method("GET");
+// Aceptar GET y HEAD
+$method = $_SERVER['REQUEST_METHOD'];
+if ($method !== 'GET' && $method !== 'HEAD') {
+    http_response_code(405);
+    echo "Método no permitido";
+    exit;
+}
 
 $userId = $_GET['user_id'] ?? null;
 if (!$userId) {
@@ -21,6 +27,14 @@ try {
         exit;
     }
 
+    // Si es HEAD, solo enviar los headers
+    if ($method === 'HEAD') {
+        header('Content-Type: application/pdf');
+        header('Content-Length: ' . strlen($row['cv_pdf']));
+        exit;
+    }
+
+    // Si es GET, enviar el archivo completo
     header('Content-Type: application/pdf');
     header('Content-Disposition: inline; filename="cv.pdf"');
     echo $row['cv_pdf'];

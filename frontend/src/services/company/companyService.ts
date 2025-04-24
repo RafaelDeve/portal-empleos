@@ -85,11 +85,24 @@ export const updateJob = async (jobData: any) => {
 };
 
 export const getCVsByJobId = async (jobId: number) => {
-  const response = await fetch("http://localhost:8888/api/company/getApplicationsWithCV.php", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ job_id: jobId }),
-  });
+  try {
+    const response = await fetch("http://localhost:8888/api/company/getApplicationsWithCV.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ job_id: jobId }),
+    });
 
-  return await response.json();
+    const text = await response.text();
+
+    if (!text) {
+      console.warn("La respuesta está vacía. Retornando lista vacía.");
+      return [];
+    }
+
+    return JSON.parse(text);
+  } catch (error) {
+    console.error("Error al obtener CVs por ID de vacante:", error);
+    return [];
+  }
 };
+

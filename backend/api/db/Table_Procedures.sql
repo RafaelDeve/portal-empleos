@@ -244,8 +244,29 @@ BEGIN
         SET MESSAGE_TEXT = 'Job not found';
     END IF;
 
-    -- Devolver los CVs relacionados a esa vacante
-    SELECT cv.*
+    -- Devolver los CVs relacionados a esa vacante sin incluir el PDF
+    SELECT 
+        cv.user_id,
+        cv.first_name,
+        cv.last_name,
+        cv.phone,
+        cv.address,
+        cv.city,
+        cv.education_institution,
+        cv.degree_title,
+        cv.education_start_date,
+        cv.education_end_date,
+        cv.work_company,
+        cv.work_position,
+        cv.work_start_date,
+        cv.work_end_date,
+        cv.skills,
+        cv.languages,
+        cv.career_objective,
+        cv.achievements_projects,
+        cv.availability,
+        cv.linkedin_profile,
+        cv.references
     FROM applications
     JOIN cv ON applications.user_id = cv.user_id
     WHERE applications.job_id = p_job_id;
@@ -338,7 +359,7 @@ END $$
 DELIMITER ;
 
 -- ================================================
--- PROCEDURE: sp_getCV
+-- PROCEDURE: sp_getCV 
 -- ================================================
 DROP PROCEDURE IF EXISTS `sp_getCV`;
 DELIMITER $$
@@ -347,7 +368,31 @@ CREATE PROCEDURE `sp_getCV` (
     IN p_user_id INT
 )
 BEGIN
-    SELECT * FROM cv WHERE user_id = p_user_id;
+    SELECT 
+        id,
+        user_id,
+        first_name,
+        last_name,
+        phone,
+        address,
+        city,
+        degree_title,
+        education_institution,
+        education_start_date,
+        education_end_date,
+        work_position,
+        work_company,
+        work_start_date,
+        work_end_date,
+        skills,
+        languages,
+        availability,
+        linkedin_profile,
+        career_objective,
+        achievements_projects,
+        `references`
+    FROM cv
+    WHERE user_id = p_user_id;
 END $$
 
 DELIMITER ;
